@@ -119,8 +119,8 @@ def transformYIQ2RGB(imgYIQ: np.ndarray) -> np.ndarray:
     return imgRGB
 
 
-def show_img(img: np.ndarray):
-    plt.gray()  # in case of grayscale image
+def display_img(img: np.ndarray):
+    plt.gray()  # case of grayscale
     plt.imshow(img)
     plt.show()
     pass
@@ -160,10 +160,9 @@ def hsitogramEqualize(imgOrig: np.ndarray) -> (np.ndarray, np.ndarray, np.ndarra
         imgEq = (imgEq / 255)
         imgYIQ[:, :, 0] = imgEq
         rgb_img = transformYIQ2RGB(imgYIQ)
-        show_img(rgb_img)
-
+        display_img(rgb_img)
     else:  # case grayscale
-        show_img(imgEq)
+        display_img(imgEq)
     return imgEq, histOrg, histEQ
 
 
