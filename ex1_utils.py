@@ -35,12 +35,6 @@ def imReadAndConvert(filename: str, representation: int) -> np.ndarray:
     :return: The image object
     """
 
-    # im = cv2.imread(filename, representation-1)
-    # im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
-    # im = im/np.max(im)
-    #
-    # return im
-
     if representation==2:
         img_rgb =cv2.imread(filename)
         img_rgb=cv2.cvtColor(img_rgb,cv2.COLOR_BGR2RGB)
@@ -51,7 +45,6 @@ def imReadAndConvert(filename: str, representation: int) -> np.ndarray:
         img_grayscale = cv2.cvtColor(img_grayscale, cv2.COLOR_BGR2GRAY)
         img_grayscale = img_grayscale / np.max(img_grayscale)
         return img_grayscale
-
 
 
 
@@ -82,18 +75,6 @@ def transformRGB2YIQ(imgRGB: np.ndarray) -> np.ndarray:
     :param imgRGB: An Image in RGB
     :return: A YIQ in image color space
     """
-    # if (imgRGB.ndim == 3):  # if the image is in rgb colors
-    #     row = len(imgRGB)
-    #     col = len(imgRGB[0])
-    #     z = len(imgRGB[0][0])
-    #     array = np.array([[0.299, 0.587, 0.114], [0.596, -0.275, -0.321], [0.212, -0.523, 0.311]])
-    #     rgb_trans = imgRGB.transpose()  # transpose the matrix for multiply it
-    #     yiq_mul = array.dot(rgb_trans.reshape(3, row * col))  # the matrix after multiply
-    #     yiq_before = np.reshape(yiq_mul, (z, col, row))  # yiq before reshape
-    #     yiq = np.transpose(yiq_before)  # the original yiq
-    #     return yiq
-    # else:  # if the image is in grayscale
-    #     return imgRGB
 
     image = np.copy(imgRGB)
     RGB2YIQ = np.array([[0.299, 0.587, 0.114], [0.596, -0.275, -0.321], [0.212, -0.523, 0.311]])
@@ -102,7 +83,6 @@ def transformRGB2YIQ(imgRGB: np.ndarray) -> np.ndarray:
     r = range(r)
     c = range(c)
     d = range(d)
-
     for i in r:
         for j in c:
             for t in d:
@@ -111,7 +91,6 @@ def transformRGB2YIQ(imgRGB: np.ndarray) -> np.ndarray:
 
                 elif YIQ_image[i, j, t] < 0:
                     YIQ_image[i, j, t] = 0
-
     return YIQ_image
 
 
@@ -122,76 +101,70 @@ def transformYIQ2RGB(imgYIQ: np.ndarray) -> np.ndarray:
     :return: A RGB in image color space
     """
     img = np.copy(imgYIQ)
-    rgb2yiq = np.array([[0.299, 0.587, 0.114], [0.596, -0.275, -0.321], [0.212, -0.523, 0.311]])
-    yiq2rgb = linalg.inv(rgb2yiq)  # reverse matrix to multiply
-    imgRGB = img.dot(yiq2rgb)
-    m, n, z = np.shape(imgRGB)
-
-    for i in range(m):  # imdexes that not in range [0,1]
-        for j in range(n):
-            for t in range(z):
+    RGB2YIQ = np.array([[0.299, 0.587, 0.114], [0.596, -0.275, -0.321], [0.212, -0.523, 0.311]])
+    YIQ2RGB = np.linalg.inv(RGB2YIQ)
+    imgRGB = img.dot(YIQ2RGB)
+    r, c, d = np.shape(imgRGB)
+    r = range(r)
+    c = range(c)
+    d = range(d)
+    for i in r:
+        for j in c:
+            for t in d:
                 if imgRGB[i, j, t] < 0:
                     imgRGB[i, j, t] = 0
 
                 elif imgRGB[i, j, t] > 1:
                     imgRGB[i, j, t] = 1
-
     return imgRGB
 
+
+def show_img(img: np.ndarray):
+    plt.gray()  # in case of grayscale image
+    plt.imshow(img)
+    plt.show()
+    pass
 
 
 def hsitogramEqualize(imgOrig: np.ndarray) -> (np.ndarray, np.ndarray, np.ndarray):
     """
         Equalizes the histogram of an image
         :param imgOrig: Original Histogram
-        :ret
+        :return: (imgEq,histOrg,histEQ)
     """
-    if (imgOrig.ndim == 2):  # if the image is in grayscale
-        imgOrig = cv2.normalize(imgOrig.astype('float64'), None, 0, 255, cv2.NORM_MINMAX)
-        y_channel = imgOrig
 
-    else:  # if the image is in rgb colors
-        imgOrig = cv2.normalize(imgOrig.astype('float64'), None, 0, 255, cv2.NORM_MINMAX)
-        y_channel = transformRGB2YIQ(imgOrig)[:, :, 0]  # take the y channel
+    #show_img(imgOrig) # display the input image
 
-    histogram = calHist(y_channel)  # step 1 - calculate the histogram image
-    cum_sum = calCumSum(histogram)  # step 2 - calculate the cumulative sum
-    nor_cum_sum = cum_sum / cum_sum.max()  # step 3 - normalazied the cum sum
-    map_img = nor_cum_sum * 255  # step 4 - mapping the old intensity colors to new intensity color
-    round_map = map_img.astype('uint8')  # step 5 - round the values
-    old_y_channel = np.array(y_channel).astype('uint8')  # casting to int for set each value at the round_map
-    new_img = round_map[old_y_channel]  # step 6 - set the new intensity value according to the map
-    imgOrig = cv2.normalize(imgOrig.astype('double'), None, 0.0, 1.0, cv2.NORM_MINMAX)
-    histogram_new = calHist(new_img)  # the new image's histogram
-
-    if (imgOrig.ndim == 2):
-        return new_img, histogram, histogram_new
-
+    isRGB = bool(imgOrig.ndim == 3)  # case RGB image
+    if isRGB:
+        imgYIQ = transformRGB2YIQ(imgOrig)
+        imgOrig = np.copy(imgYIQ[:, :, 0])  # Y channel of the YIQ image
     else:
-        yiq = transformRGB2YIQ(imgOrig)
-        yiq[:, :, 0] = new_img / 255
-        rgb = transformYIQ2RGB(yiq)
-        return rgb, histogram, histogram_new
+        imgYIQ=imgOrig
 
+    imgOrig = imgOrig * 255
+    imgOrig = (np.around(imgOrig)).astype('uint8')
 
-def calHist(
-        img: np.ndarray) -> np.ndarray:  # side function that calculate the number each intensity color and return an array
-    img_flat = img.ravel()  # flat the array for running in one for
-    hist = np.zeros(256)
-    for pix in img_flat:
-        pix = math.floor(pix)
-        hist[pix] += 1
+    histOrg, bin_edges = np.histogram(imgOrig.flatten(), 256, [0, 255])  # Calculate a histogram of the original image
+    cumsum = histOrg.cumsum()  # calculate cumsum
 
-    return hist
+    imgScale = np.ma.masked_equal(cumsum, 0)
+    imgScale = (imgScale - imgScale.min()) * 255 / (imgScale.max() - imgScale.min())  # scale to our histogram
+    after_scale = np.ma.filled(imgScale, 0).astype('uint8')  # check that all pixels are integers
 
+    # after i made scale i need to map every point in cumsum to new point in the linear line
+    imgEq = after_scale[imgOrig.astype('uint8')]
+    histEQ, bin_edges2 = np.histogram(imgEq.flatten(), 256, [0, 256])  # Calculate a histogram of the new image
 
-def calCumSum(arr: np.ndarray) -> np.ndarray:
-    cum_sum = np.zeros_like(arr)
-    cum_sum[0] = arr[0]
-    for i in range(1, len(arr)):
-        cum_sum[i] = cum_sum[i - 1] + arr[i]
+    if isRGB:  # RGB case
+        imgEq = (imgEq / 255)
+        imgYIQ[:, :, 0] = imgEq
+        rgb_img = transformYIQ2RGB(imgYIQ)
+        show_img(rgb_img)
 
-    return cum_sum
+    else:  # case grayscale
+        show_img(imgEq)
+    return imgEq, histOrg, histEQ
 
 
 def quantizeImage(imOrig: np.ndarray, nQuant: int, nIter: int) -> (List[np.ndarray], List[float]):
