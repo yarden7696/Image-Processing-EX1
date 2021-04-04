@@ -38,13 +38,15 @@ def imReadAndConvert(filename: str, representation: int) -> np.ndarray:
     if representation==2:
         img_rgb =cv2.imread(filename)
         img_rgb=cv2.cvtColor(img_rgb,cv2.COLOR_BGR2RGB)
-        img_rgb = img_rgb / np.max(img_rgb)
+        img_rgb = img_rgb / 255.0
         return img_rgb
     else:
-        img_grayscale=cv2.imread(filename) # grayscale
-        img_grayscale = cv2.cvtColor(img_grayscale, cv2.COLOR_BGR2GRAY)
-        img_grayscale = img_grayscale / np.max(img_grayscale)
+        img_grayscale=cv2.imread(filename,cv2.IMREAD_GRAYSCALE) # grayscale
+        img_grayscale=img_grayscale/255.0
+        # img_grayscale = cv2.cvtColor(img_grayscale, cv2.COLOR_BGR2GRAY)
+        # img_grayscale = img_grayscale / np.max(img_grayscale)
         return img_grayscale
+        pass
 
 
 
@@ -64,7 +66,7 @@ def imDisplay(filename: str, representation: int):
         grayscale_img = imReadAndConvert(filename, 1)
         plt.imshow(grayscale_img, cmap='gray')
         plt.show()
-
+        pass
 
 
 
@@ -76,22 +78,11 @@ def transformRGB2YIQ(imgRGB: np.ndarray) -> np.ndarray:
     :return: A YIQ in image color space
     """
 
-    image = np.copy(imgRGB)
-    RGB2YIQ = np.array([[0.299, 0.587, 0.114], [0.596, -0.275, -0.321], [0.212, -0.523, 0.311]])
-    YIQ_image = image.dot(RGB2YIQ)
-    r, c, d = np.shape(YIQ_image)
-    r = range(r)
-    c = range(c)
-    d = range(d)
-    for i in r:
-        for j in c:
-            for t in d:
-                if YIQ_image[i, j, t] > 1:
-                    YIQ_image[i, j, t] = 1
+    RGB2YIQ = np.array([[0.299, 0.587, 0.114],[0.596, -0.275, -0.321],[0.212, -0.523, 0.311]])
+    res_YIQ = np.dot(imgRGB, RGB2YIQ.T.copy())
+    return res_YIQ
+    pass
 
-                elif YIQ_image[i, j, t] < 0:
-                    YIQ_image[i, j, t] = 0
-    return YIQ_image
 
 
 def transformYIQ2RGB(imgYIQ: np.ndarray) -> np.ndarray:
@@ -100,27 +91,17 @@ def transformYIQ2RGB(imgYIQ: np.ndarray) -> np.ndarray:
     :param imgYIQ: An Image in YIQ
     :return: A RGB in image color space
     """
-    img = np.copy(imgYIQ)
-    RGB2YIQ = np.array([[0.299, 0.587, 0.114], [0.596, -0.275, -0.321], [0.212, -0.523, 0.311]])
-    YIQ2RGB = np.linalg.inv(RGB2YIQ)
-    imgRGB = img.dot(YIQ2RGB)
-    r, c, d = np.shape(imgRGB)
-    r = range(r)
-    c = range(c)
-    d = range(d)
-    for i in r:
-        for j in c:
-            for t in d:
-                if imgRGB[i, j, t] < 0:
-                    imgRGB[i, j, t] = 0
 
-                elif imgRGB[i, j, t] > 1:
-                    imgRGB[i, j, t] = 1
-    return imgRGB
+    RGB2YIQ = np.array([[0.299, 0.587, 0.114],[0.596, -0.275, -0.321],[0.212, -0.523, 0.311]])
+    temp = np.linalg.inv(RGB2YIQ)
+    res_BGR = np.dot(imgYIQ, temp.T.copy())
+    return res_BGR
+    pass
+
 
 
 def display_img(img: np.ndarray):
-    plt.gray()  # case of grayscale
+    plt.gray()  # grayscale
     plt.imshow(img)
     plt.show()
     pass
@@ -133,7 +114,6 @@ def hsitogramEqualize(imgOrig: np.ndarray) -> (np.ndarray, np.ndarray, np.ndarra
         :return: (imgEq,histOrg,histEQ)
     """
 
-    #display_img(imgOrig) # display the input image
 
     isRGB = bool(imgOrig.ndim == 3)  # case RGB image
     if isRGB:
@@ -164,7 +144,6 @@ def hsitogramEqualize(imgOrig: np.ndarray) -> (np.ndarray, np.ndarray, np.ndarra
     else:  # case grayscale
         display_img(imgEq)
     return imgEq, histOrg, histEQ
-
 
 
 
