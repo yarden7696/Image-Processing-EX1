@@ -1,15 +1,14 @@
 # Image-Processing-EX1 
  
-Python version: 3.9.2 
+ ### Python version: 3.9.2  
+ ### platform:  
 
-platform:  
-
-This assignment deals with the following topics:
+ ### This assignment deals with the following topics:
 - Histogram equalization
 - Optimal image quantization
 - Gamma Correction
 
-files to submit:
+ ### files to submit:
 
 1. ex1_utils.py: A file that contains the following functions that perform operations on images:
 - imReadAndConvert: Loading grayscale and RGB image representations
