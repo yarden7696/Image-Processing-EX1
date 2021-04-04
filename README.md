@@ -1,7 +1,7 @@
 # Image-Processing-EX1 
  
- ### Python version: 3.9.2  
- ### platform:  
+ Python version: 3.9.2  
+ platform:  
 
  ### This assignment deals with the following topics:
 - Histogram equalization
@@ -10,7 +10,7 @@
 
  ### files to submit:
 
-1. ex1_utils.py: A file that contains the following functions that perform operations on images:
+1) ex1_utils.py: A file that contains the following functions that perform operations on images:
 - imReadAndConvert: Loading grayscale and RGB image representations
 - imDisplay: Displaying the images
 - transformRGB2YIQ: Transforming RGB color images to the YIQ color space
