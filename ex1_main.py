@@ -40,6 +40,7 @@ def quantDemo(img_path: str, rep: int):
     plt.figure()
     plt.imshow(img_lst[-1])
 
+
     plt.figure()
     plt.plot(err_lst, 'r')
     plt.show()
@@ -47,20 +48,20 @@ def quantDemo(img_path: str, rep: int):
 
 def main():
     print("ID:", myID())
-    img_path = 'beach.jpg'
+    img_path = 'dark.jpg'
 
     # Basic read and display
-    # imDisplay(img_path, LOAD_GRAY_SCALE)
-    # imDisplay(img_path, LOAD_RGB)
-    #
-    # # Convert Color spaces
-    # img = imReadAndConvert(img_path, LOAD_RGB)
-    # #print(img)
-    # yiq_img = transformRGB2YIQ(img)
-    # f, ax = plt.subplots(1, 2)
-    # ax[0].imshow(img)
-    # ax[1].imshow(yiq_img)
-    # plt.show()
+    imDisplay(img_path, LOAD_GRAY_SCALE)
+    imDisplay(img_path, LOAD_RGB)
+
+    # Convert Color spaces
+    img = imReadAndConvert(img_path, LOAD_RGB)
+    #print(img)
+    yiq_img = transformRGB2YIQ(img)
+    f, ax = plt.subplots(1, 2)
+    ax[0].imshow(img)
+    ax[1].imshow(yiq_img)
+    plt.show()
 
     # Image histEq
     histEqDemo(img_path, LOAD_GRAY_SCALE)

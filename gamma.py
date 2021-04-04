@@ -29,7 +29,7 @@ def gammaDisplay(img_path: str, rep: int):
     temp = img
     cv2.imshow('Gamma Correction', img)
 
-    # I create an inner function that its input is a gamma number. this function displays the
+    # I create an inner function that her input is a gamma number. this function displays the
     # new image according to the new gamma.
     def display(position: int):
         position = float(position)
@@ -40,6 +40,7 @@ def gammaDisplay(img_path: str, rep: int):
     cv2.namedWindow('Gamma Correction')
     # Creates a trackbar and attaches it to the specified window.
     cv2.createTrackbar('Gamma', 'Gamma Correction', 1, 100, display)
+    display(1)
 
     while True:
         key = cv2.waitKey(1000)
