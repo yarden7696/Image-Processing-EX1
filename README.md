@@ -18,8 +18,7 @@
 - hsitogramEqualize: Performing intensity transformations - histogram equalization
 - quantizeImage: Performing optimal quantization
 
-2. gamma.py: File that including a function that performs gamma correction on an image with a given γ
+2.gamma.py: File that including a function that performs gamma correction on an image with a given γ
 - gammaDisplay: GUI for gamma correction (with slide to change the brightness)
 
-
-3. ex1_main.py: Tester of the lecturer to test all the the functions
+3.ex1_main.py: Tester of the lecturer to test all the the functions
