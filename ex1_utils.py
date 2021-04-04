@@ -204,11 +204,9 @@ def quantizeImage(imOrig: np.ndarray, nQuant: int, nIter: int) -> (List[np.ndarr
             _newImg=_newImg / 255.0
             imgYIQ[:, :, 0] = _newImg
             _newImg = transformYIQ2RGB(imgYIQ)  # Convert back to RGB
-        quantized_lst.append(_newImg)
+        quantized_lst.append(_newImg)  # add to quantized_lst
 
-        #  each boundary become to be a middle of 2 means
-        for b in range(1, len(_Z) - 1):  # b is boundary
-            _Z[b] = (_Q[b - 1] + _Q[b]) / 2
+        _Z,_Q = fix_boundary(_Z, _Q)  # each boundary become to be a middle of 2 means
         if len(MSE_lst) >= 2:
             if np.abs(MSE_lst[-1] - MSE_lst[-2]) <= 0.000001:
                 break
@@ -216,3 +214,8 @@ def quantizeImage(imOrig: np.ndarray, nQuant: int, nIter: int) -> (List[np.ndarr
     return quantized_lst, MSE_lst
     pass
 
+
+def fix_boundary(_Z: np.ndarray, _Q: np.ndarray) -> (List[np.ndarray],List[np.ndarray]):
+    for b in range(1, len(_Z) - 1):  # b is boundary
+        _Z[b] = (_Q[b - 1] + _Q[b]) / 2
+    return _Z, _Q
