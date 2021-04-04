@@ -9,8 +9,9 @@
 - Gamma Correction
 
  ### files to submit:
+1.ex1_main.py: The purpose of this main test is to test the functions i implemented in ex1_utils.py and gamma.py files.
 
-1.ex1_utils.py: A file that contains the following functions that perform operations on images:
+2.ex1_utils.py: A file that contains the following functions that perform operations on images:
 - imReadAndConvert: Loading grayscale and RGB image representations
 - imDisplay: Displaying the images
 - transformRGB2YIQ: Transforming RGB color images to the YIQ color space
@@ -18,8 +19,6 @@
 - hsitogramEqualize: Performing intensity transformations - histogram equalization
 - quantizeImage: Performing optimal quantization
 
-2.gamma.py: The purpose of this file is to performs gamma correction on an image with a given γ
+3.gamma.py: The purpose of this file is to performs gamma correction on an image with a given γ
 - gammaDisplay: GUI for gamma correction 
-
-3.ex1_main.py: The purpose of this main test is to test the functions i implemented in ex1_utils.py and gamma.py files.
 
