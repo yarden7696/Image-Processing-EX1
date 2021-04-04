@@ -9,7 +9,7 @@
 - Gamma Correction
 
  ### files to submit:
-**1.ex1_main.py:** The purpose of this main test is to test the functions i implemented in ex1_utils.py and gamma.py files.  
+**1.ex1_main.py:** the purpose of this main test is to test the functions i implemented in ex1_utils.py and gamma.py files.  
 
 **2.ex1_utils.py:** this file implement the following functions-  
 - imReadAndConvert: reads an image, and returns the image converted as requested  
@@ -21,4 +21,6 @@
 
 **3.gamma.py:** the purpose of this file is to performs gamma correction on an image with a given γ  
 - gammaDisplay: GUI for gamma correction   
+
+I chose testImg1.jpg because....
 
