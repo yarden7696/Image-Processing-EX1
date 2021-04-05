@@ -23,6 +23,6 @@
 - gammaDisplay: GUI for gamma correction   
 __________________________________________________________________________________________________________________________________________
 
-I chose image testImg1.jpg because my dream is to see the Northern Lights, i really like the colors and wanted to see how the functions I wrote will affect this image.
+I chose image testImg1.jpg because my dream is to see the northern lights, i really like the colors and i wanted to see how the functions i wrote will affect this image.
 
 
