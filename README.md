@@ -21,6 +21,8 @@
 
 **gamma.py:** the purpose of this file is to performs gamma correction on an image with a given γ  
 - gammaDisplay: GUI for gamma correction   
+__________________________________________________________________________________________________________________________________________
 
-I chose testImg1.jpg because....
+I chose image testImg1.jpg because my dream is to see the Northern Lights, i really like the colors and wanted to see how the functions I wrote will affect this image.
+
 
