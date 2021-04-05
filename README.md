@@ -1,7 +1,7 @@
 # Image-Processing-EX1 
  
  Python version: 3.9.2  
- platform:  
+ platform: pycharm 
 
  ### This assignment deals with the following topics:
 - Histogram equalization
