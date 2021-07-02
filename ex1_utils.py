@@ -185,7 +185,7 @@ def quantizeImage(imOrig: np.ndarray, nQuant: int, nIter: int) -> (List[np.ndarr
         _newImg = np.zeros(imOrig.shape)  # Initialize a matrix with 0 in the original image size
 
         for j in range(len(_Q)):  # every j is a cell
-            if j == len(_Q) - 1:
+            if j == len(_Q) - 1: # last itarate of j
                 right_cell = _Z[j + 1] + 1
             else:
                 right_cell = _Z[j + 1]
